@@ -1,0 +1,44 @@
+name: Validate Docs Folder
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  check-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify /docs folder and files exist
+        run: |
+          if [ ! -d "docs" ]; then
+            echo "Error: /docs directory missing!"
+            exit 1
+          fi
+          
+          echo "Checking required files..."
+          ls -la docs/
+          
+          # Check for ERD file (PNG or PDF)
+          if ! ls docs/*.png docs/*.pdf 1> /dev/null 2>&1; then
+            echo "Error: ERD image or PDF missing in /docs!"
+            exit 1
+          fi
+          
+          # Check for API Endpoint plan (.md or .pdf)
+          if [ ! -f "docs/API-Endpoint-plan.md" ] && ! ls docs/*.pdf 1> /dev/null 2>&1; then
+            echo "Error: API plan missing in /docs!"
+            exit 1
+          fi
+          
+          # Check for SQL script (.sql)
+          if ! ls docs/*.sql 1> /dev/null 2>&1; then
+            echo "Error: SQL script missing in /docs!"
+            exit 1
+          fi
+          
+          echo "All required files found in /docs!"
