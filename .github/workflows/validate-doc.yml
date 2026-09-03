@@ -1,0 +1,49 @@
+name: Validate Doc Folder
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+  check-doc-files:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify /doc directory exists
+        run: |
+          if [ ! -d "doc" ]; then
+            echo "Error: Directory '/doc' does not exist in root!"
+            exit 1
+          fi
+          echo "Found /doc directory."
+
+      - name: Verify PNG, MD, and SQL files exist
+        run: |
+          cd doc
+          
+          # Check PNG file (ERD)
+          if ! ls *.png 1> /dev/null 2>&1; then
+            echo "Error: No .png file found in /doc!"
+            exit 1
+          fi
+          echo "✔ PNG file found."
+
+          # Check MD file (API Endpoint Plan)
+          if ! ls *.md 1> /dev/null 2>&1; then
+            echo "Error: No .md file found in /doc!"
+            exit 1
+          fi
+          echo "✔ MD file found."
+
+          # Check SQL file (Database script)
+          if ! ls *.sql 1> /dev/null 2>&1; then
+            echo "Error: No .sql file found in /doc!"
+            exit 1
+          fi
+          echo "✔ SQL file found."
+
+          echo "All required files (.png, .md, .sql) are present in /doc!"
