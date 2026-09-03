@@ -1,4 +1,4 @@
-name: Validate Docs Folder
+name: Validate Doc Folder
 
 on:
   push:
@@ -7,38 +7,38 @@ on:
     branches: [ "main", "master" ]
 
 jobs:
-  check-docs:
+  check-doc:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Verify /docs folder and files exist
+      - name: Verify /doc folder and files exist
         run: |
-          if [ ! -d "docs" ]; then
-            echo "Error: /docs directory missing!"
+          if [ ! -d "doc" ]; then
+            echo "Error: /doc directory missing!"
             exit 1
           fi
           
           echo "Checking required files..."
-          ls -la docs/
+          ls -la doc/
           
           # Check for ERD file (PNG or PDF)
           if ! ls docs/*.png docs/*.pdf 1> /dev/null 2>&1; then
-            echo "Error: ERD image or PDF missing in /docs!"
+            echo "Error: ERD image or PDF missing in /doc!"
             exit 1
           fi
           
           # Check for API Endpoint plan (.md or .pdf)
-          if [ ! -f "docs/API-Endpoint-plan.md" ] && ! ls docs/*.pdf 1> /dev/null 2>&1; then
-            echo "Error: API plan missing in /docs!"
+          if [ ! -f "docs/API-Endpoint-plan.md" ] && ! ls doc/*.pdf 1> /dev/null 2>&1; then
+            echo "Error: API plan missing in /doc!"
             exit 1
           fi
           
           # Check for SQL script (.sql)
-          if ! ls docs/*.sql 1> /dev/null 2>&1; then
-            echo "Error: SQL script missing in /docs!"
+          if ! ls doc/*.sql 1> /dev/null 2>&1; then
+            echo "Error: SQL script missing in /doc!"
             exit 1
           fi
           
-          echo "All required files found in /docs!"
+          echo "All required files found in /doc!"
