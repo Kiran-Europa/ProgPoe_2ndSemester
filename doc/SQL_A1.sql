@@ -2,7 +2,7 @@
 CREATE DATABASE IF NOT EXISTS RaceDayDB;
 USE RaceDayDB;
 
--- 2. Drop Tables if re-running cleanly (order matters due to Foreign Keys)
+-- 2. Drop Tables if re-running cleanly 
 DROP TABLE IF EXISTS Results;
 DROP TABLE IF EXISTS Enrolments;
 DROP TABLE IF EXISTS Categories;
